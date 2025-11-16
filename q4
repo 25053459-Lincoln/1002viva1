@@ -1,0 +1,80 @@
+
+import java.util.Scanner;
+
+public class viva1q4 {
+    
+
+/**
+ * 题目 4: Tok Wan Osman 的词语宝石
+ * 找出字典序最小 (First Whisper)、ASCII 值和最高 (Last Echo) 和字典序最大 (Core Value) 的子字符串。
+ * Title 4: Tok Wan Osman's Word Gems
+* find the First Whisper, ASCII Value, and Last Echo and Core Value substrings.
+ */
+
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+      
+        System.out.println("please enter the word (Word):");
+        String word = scanner.nextLine();
+        
+        System.out.println("Please enter the length of the gem (k):");//请输入宝石长度
+        if (!scanner.hasNextInt()) return;
+        int k = scanner.nextInt();
+        scanner.nextLine(); // 消耗 k 后的换行符   The newline character after K is consumed
+
+        // 规则：所有字母都应视为小写进行分析  Rule: all letters should be analyzed as lowercase
+        String lowerWord = word.toLowerCase();
+        int n = lowerWord.length();
+
+        if (n < k) {
+            System.out.println("Output:\nThe length K is greater than the word length N and can not form a substring");
+            //长度 k 大于单词长度 N，无法形成子字符串
+            //The length K is greater than the word length N and can not form a substring
+            return; 
+        }
+
+        String firstWhisper = ""; // 字典序最小   Minimum lexicographic order
+        String lastEcho = "";    // ASCII 值总和最高 (
+                                   //ASCII values sum to the highest 
+        String coreValue = "";   // 字典序最大 
+                                 //Lexicographic maximum 
+        long maxAsciiSum = -1;
+
+        // 遍历所有长度为 k 的子字符串   Iterate through all substrings of length K
+        for (int i = 0; i <= n - k; i++) {
+            String sub = lowerWord.substring(i, i + k);
+
+            // 1. First Whisper (字典序最小  Minimum lexicographic order)
+            if (firstWhisper.isEmpty() || sub.compareTo(firstWhisper) < 0) {
+                firstWhisper = sub;
+            }
+
+            // 2. Core Value (字典序最大   Lexicographic maximum )
+            if (coreValue.isEmpty() || sub.compareTo(coreValue) > 0) {
+                coreValue = sub;
+            }
+
+            // 3. Last Echo (ASCII 值总和最高 ASCII values sum to the highest )
+            long currentAsciiSum = 0;
+            for (char c : sub.toCharArray()) {
+                currentAsciiSum += c; // 字符的 ASCII 值 the value of ASCII
+            }
+            
+            // 如果和更高，或者和相等但这是第一个找到的，则更新 (题目要求平局取第一个)
+            //If and higher, or and equal but this is found first, then update (title requires draw to take first) 
+            if (currentAsciiSum > maxAsciiSum) {
+                maxAsciiSum = currentAsciiSum;
+                lastEcho = sub; 
+            }
+        }
+        
+        System.out.println("Output:");
+        System.out.println(firstWhisper); // First Whisper (最小)
+        System.out.println(lastEcho);    // Last Echo (ASCII 和最高)
+        System.out.println(coreValue);   // Core Value (最大)
+    }
+}
+    
+
